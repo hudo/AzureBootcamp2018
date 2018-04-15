@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BootShop.Web.API.Infrastructure;
+using BootShop.Web.API.Model;
+using BootShop.Web.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace BootShop.Web.API
@@ -29,7 +28,20 @@ namespace BootShop.Web.API
                 opt.SwaggerDoc("v1", new Info { Title = "Azure Bootcamp Webshop Demo", Version = "v1"});
             });
 
+            services.AddDbContext<WebshopDbContext>(opt =>
+            {
+                opt.UseInMemoryDatabase("webshop");
+                opt.ConfigureWarnings(warn => warn.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+            });
+            
+            services.AddTransient<ProcessManager>();
+            services.AddTransient<PaymentService>();
+            services.AddTransient<MailerService>();
+
             services.AddMvc();
+
+            services.AddTransient<IResilientHttpClientFactory, ResilientHttpClientFactory>();
+            services.AddTransient<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateClient());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
