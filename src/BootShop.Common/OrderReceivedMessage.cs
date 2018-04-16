@@ -1,6 +1,6 @@
 ﻿namespace BootShop.Common
 {
-    public class ProcessPaymentCommand
+    public class OrderReceivedMessage
     {
         public int OrderId { get; set; }
         public decimal Amount { get; set; }

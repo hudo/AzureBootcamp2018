@@ -8,17 +8,17 @@ namespace BootShop.Web.API
     public class ProcessManager
     {
         private readonly WebshopDbContext _db;
-        private readonly PaymentService _paymentService;
-        private readonly MailerService _mailerService;
+        private readonly PaymentClient _paymentClient;
+        private readonly MailerClient _mailerClient;
 
         public ProcessManager(
             WebshopDbContext db,
-            PaymentService paymentService,
-            MailerService mailerService)
+            PaymentClient paymentClient,
+            MailerClient mailerClient)
         {
             _db = db;
-            _paymentService = paymentService;
-            _mailerService = mailerService;
+            _paymentClient = paymentClient;
+            _mailerClient = mailerClient;
         }
 
         public async Task<int> Handle(ProcessOrderCommand command)
@@ -33,7 +33,7 @@ namespace BootShop.Web.API
 
                     await _db.SaveChangesAsync();
 
-                    await _paymentService.Process(order);
+                    await _paymentClient.Process(order);
 
                     tx.Commit();
                 }
@@ -49,11 +49,13 @@ namespace BootShop.Web.API
                 {
                     tx.Rollback();
 
+                    // log and bubble up
+
                     throw;
                 }
             }
 
-            await _mailerService.SendEmailNotification(order);
+            await _mailerClient.SendEmailNotification(order);
 
             return order.Id;
         }

@@ -40,6 +40,7 @@ namespace BootShop.Web.API.Infrastructure
                             _logger.LogWarning(msg);
                             _logger.LogDebug(msg);
                         }),
+
                 Policy.Handle<HttpRequestException>()
                     .CircuitBreakerAsync(
                         // number of exceptions before breaking circuit

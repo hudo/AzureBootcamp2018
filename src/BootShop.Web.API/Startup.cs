@@ -35,8 +35,8 @@ namespace BootShop.Web.API
             });
             
             services.AddTransient<ProcessManager>();
-            services.AddTransient<PaymentService>();
-            services.AddTransient<MailerService>();
+            services.AddTransient<PaymentClient>();
+            services.AddTransient<MailerClient>();
 
             services.AddMvc();
 

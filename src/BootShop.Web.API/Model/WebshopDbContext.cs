@@ -10,5 +10,7 @@ namespace BootShop.Web.API.Model
         }
 
         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<PendingOrderNotification> Outbox { get; set; }
     }
 }
