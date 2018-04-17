@@ -15,6 +15,7 @@ namespace BootShop.Service.EmailSender
             WebHost.CreateDefaultBuilder(args)
                 .UseShutdownTimeout(TimeSpan.FromSeconds(5))
                 .UseStartup<Startup>()
+                .UseUrls("http://+:5020")
                 .Build();
     }
 }

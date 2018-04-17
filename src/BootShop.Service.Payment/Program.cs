@@ -1,7 +1,14 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
-namespace BootShop.Web.API
+namespace BootShop.Service.Payment
 {
     public class Program
     {
@@ -13,7 +20,7 @@ namespace BootShop.Web.API
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://+:5000")
+                .UseUrls("http://+:5010")
                 .Build();
     }
 }

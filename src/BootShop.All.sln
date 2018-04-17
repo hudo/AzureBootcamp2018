@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootShop.Service.EmailSende
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootShop.Service.Downstream", "BootShop.Service.Downstream\BootShop.Service.Downstream.csproj", "{06654625-66F6-4F26-AC04-D1202EFCB800}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BootShop.Service.Payment", "BootShop.Service.Payment\BootShop.Service.Payment.csproj", "{D05091B3-74AC-4352-90B3-728F1CC2AC20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{06654625-66F6-4F26-AC04-D1202EFCB800}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06654625-66F6-4F26-AC04-D1202EFCB800}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06654625-66F6-4F26-AC04-D1202EFCB800}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D05091B3-74AC-4352-90B3-728F1CC2AC20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D05091B3-74AC-4352-90B3-728F1CC2AC20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D05091B3-74AC-4352-90B3-728F1CC2AC20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D05091B3-74AC-4352-90B3-728F1CC2AC20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

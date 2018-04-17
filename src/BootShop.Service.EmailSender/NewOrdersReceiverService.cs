@@ -37,34 +37,35 @@ namespace BootShop.Service.EmailSender
                 {
                     _logger.LogInformation("Message received!");
 
-                    await TrySendEmail(message, queue);
+                    var mailSent = await TrySendEmail(message);
+
+                    if (mailSent)
+                        await queue.DeleteMessageAsync(message);
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
             }
         }
 
-        private async Task TrySendEmail(CloudQueueMessage message, CloudQueue queue)
+        private async Task<bool> TrySendEmail(CloudQueueMessage message)
         {
             var orderReceived = JsonConvert.DeserializeObject<OrderReceivedMessage>(message.AsString);
 
             var isSuccessful = await _sendGridClient.SendEmail(orderReceived);
 
             if (isSuccessful)
-            {
-                await queue.DeleteMessageAsync(message);
-            }
-            else
-            {
-                _logger.LogInformation($"Couldn't send email for order {orderReceived.OrderId}");
+                return true;
 
-                if (message.DequeueCount > 5)
-                {
-                    _logger.LogInformation($"Sending message to DLQ");
+            _logger.LogInformation($"Couldn't send email for order {orderReceived.OrderId}");
 
-                    await queue.DeleteMessageAsync(message);
-                }
+            if (message.DequeueCount > 5)
+            {
+                _logger.LogInformation($"Sending message to DLQ");
+
+                return true;
             }
+
+            return false;
         }
 
         private async Task<CloudQueue> GetQueue()
