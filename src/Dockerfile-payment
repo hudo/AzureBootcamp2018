@@ -1,0 +1,23 @@
+FROM microsoft/dotnet:2.0-sdk AS build
+WORKDIR /app
+
+# copy csproj and restore as distinct layers
+COPY BootShop.Payment.sln .
+COPY BootShop.Service.Payment/*.csproj ./BootShop.Service.Payment/
+COPY BootShop.Common/*.csproj ./BootShop.Common/
+RUN dotnet restore
+
+# copy and build everything else
+COPY BootShop.Service.Payment/. ./BootShop.Service.Payment/
+COPY BootShop.Common/. ./BootShop.Common/
+
+RUN dotnet build
+
+FROM build AS publish
+WORKDIR /app/BootShop.Service.Payment
+RUN dotnet publish -o out
+
+FROM microsoft/dotnet:2.0-runtime AS runtime
+WORKDIR /app
+COPY --from=publish /app/BootShop.Service.Payment/out ./
+ENTRYPOINT ["dotnet", "BootShop.Service.Payment.dll"]

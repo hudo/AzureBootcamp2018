@@ -26,7 +26,7 @@ namespace BootShop.Web.API.Infrastructure
                 Policy.Handle<HttpRequestException>()
                     .WaitAndRetryAsync(
                         // number of retries
-                        6,
+                        3,
                         // exponential backofff
                         retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                         // on retry
@@ -38,7 +38,6 @@ namespace BootShop.Web.API.Infrastructure
                                       $"due to: {exception}.";
 
                             _logger.LogWarning(msg);
-                            _logger.LogDebug(msg);
                         }),
 
                 Policy.Handle<HttpRequestException>()

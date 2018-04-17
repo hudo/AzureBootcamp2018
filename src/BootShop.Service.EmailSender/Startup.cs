@@ -26,6 +26,8 @@ namespace BootShop.Service.EmailSender
             services.AddTransient<ISendGridClient, ChaosMonkeySendGridClient>();
 
             services.AddSingleton<IHostedService, NewOrdersReceiverService>();
+
+            services.AddSingleton<TelemetryConfiguration>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

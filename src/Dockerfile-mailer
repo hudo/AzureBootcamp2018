@@ -1,0 +1,23 @@
+FROM microsoft/dotnet:2.0-sdk AS build
+WORKDIR /app
+
+# copy csproj and restore as distinct layers
+COPY BootShop.EmailSender.sln .
+COPY BootShop.Service.EmailSender/*.csproj ./BootShop.Service.EmailSender/
+COPY BootShop.Common/*.csproj ./BootShop.Common/
+RUN dotnet restore
+
+# copy and build everything else
+COPY BootShop.Service.EmailSender/. ./BootShop.Service.EmailSender/
+COPY BootShop.Common/. ./BootShop.Common/
+
+RUN dotnet build
+
+FROM build AS publish
+WORKDIR /app/BootShop.Service.EmailSender
+RUN dotnet publish -o out
+
+FROM microsoft/dotnet:2.0-runtime AS runtime
+WORKDIR /app
+COPY --from=publish /app/BootShop.Service.EmailSender/out ./
+ENTRYPOINT ["dotnet", "BootShop.Service.EmailSender.dll"]

@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  bootweb:
+    image: bootweb
+    build:
+      context: .
+      dockerfile: ./Dockerfile-web
+    ports:
+       - "5000:5000"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Test
+    depends_on:
+      - bootpay
+      - bootmailer
+  bootpay:
+    image: bootpay
+    build:
+      context: .
+      dockerfile: ./Dockerfile-pay
+    environment:
+      ASPNETCORE_ENVIRONMENT: Test
+    ports:
+      - '5010:5010'
+  bootmailer:
+    image: bootmailer
+    build:
+      context: .
+      dockerfile: ./Dockerfile-mailer
+    environment:
+      ASPNETCORE_ENVIRONMENT: Test
+    ports:
+      - '5020:5020'    
+    
