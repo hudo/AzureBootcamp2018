@@ -1,4 +1,6 @@
-﻿using Microsoft.ApplicationInsights.Extensibility;
+﻿using System;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,9 +35,7 @@ namespace BootShop.Service.EmailSender
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TelemetryConfiguration telemetry)
         {
-            loggerFactory
-                .AddDebug()
-                .AddConsole();
+            loggerFactory.AddConsole();
 
             telemetry.DisableTelemetry = true;
 
@@ -43,6 +43,12 @@ namespace BootShop.Service.EmailSender
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.Use(async (ctx, next) =>
+            {
+                Console.WriteLine($"Request: {ctx.Request.Method} {ctx.Request.Path}");
+                await next();
+            });
 
             app.Use(async (ctx, next) => { await ctx.Response.WriteAsync("Mailer service up & running"); });
         }

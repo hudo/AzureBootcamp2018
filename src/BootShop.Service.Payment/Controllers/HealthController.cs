@@ -8,7 +8,7 @@ namespace BootShop.Service.Payment.Controllers
     {
         public IActionResult Get()
         {
-            return Ok();
+            return Ok("UP");
         }
     }
 }

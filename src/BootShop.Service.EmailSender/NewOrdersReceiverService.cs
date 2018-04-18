@@ -54,7 +54,10 @@ namespace BootShop.Service.EmailSender
             var isSuccessful = await _sendGridClient.SendEmail(orderReceived);
 
             if (isSuccessful)
+            {
+                _logger.LogInformation("Mail sent successfully");
                 return true;
+            }
 
             _logger.LogInformation($"Couldn't send email for order {orderReceived.OrderId}");
 

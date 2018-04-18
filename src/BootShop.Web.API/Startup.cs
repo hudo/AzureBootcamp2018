@@ -1,6 +1,7 @@
 ﻿using BootShop.Web.API.Infrastructure;
 using BootShop.Web.API.Model;
 using BootShop.Web.API.Services;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,7 @@ namespace BootShop.Web.API
             services.AddTransient<ProcessManager>();
             services.AddTransient<PaymentClient>();
             services.AddTransient<MailerClient>();
+            services.AddSingleton<TelemetryConfiguration>();
 
             services.AddMvc();
 
@@ -46,11 +48,11 @@ namespace BootShop.Web.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TelemetryConfiguration telemetry)
         {
-            loggerFactory
-                .AddDebug()
-                .AddConsole();
+            loggerFactory.AddConsole();
+
+            telemetry.DisableTelemetry = true;
                 
             if (env.IsDevelopment())
             {

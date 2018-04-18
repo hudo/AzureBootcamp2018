@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,6 +46,12 @@ namespace BootShop.Service.Payment
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.Use(async (ctx, next) =>
+            {
+                Console.WriteLine($"Request: {ctx.Request.Method} {ctx.Request.Path}");
+                await next();
+            });
             
             app.UseMvc();
         }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using BootShop.Web.API.Model;
 using BootShop.Web.API.Services;
+using Microsoft.Extensions.Logging;
 
 namespace BootShop.Web.API
 {
@@ -10,15 +11,18 @@ namespace BootShop.Web.API
         private readonly WebshopDbContext _db;
         private readonly PaymentClient _paymentClient;
         private readonly MailerClient _mailerClient;
+        private readonly ILogger<ProcessManager> _logger;
 
         public ProcessManager(
             WebshopDbContext db,
             PaymentClient paymentClient,
-            MailerClient mailerClient)
+            MailerClient mailerClient,
+            ILogger<ProcessManager> logger)
         {
             _db = db;
             _paymentClient = paymentClient;
             _mailerClient = mailerClient;
+            _logger = logger;
         }
 
         public async Task<int> Handle(ProcessOrderCommand command)
@@ -45,8 +49,10 @@ namespace BootShop.Web.API
 
                     throw new Exception("Couldn't process the payment, please check your credit card provider and try again");
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    _logger.LogError(e, $"Error processing order {order?.Id}");
+
                     tx.Rollback();
 
                     // log and bubble up
@@ -56,6 +62,8 @@ namespace BootShop.Web.API
             }
 
             await _mailerClient.SendEmailNotification(order);
+
+            _logger.LogInformation($"Order {order.Id} processed successfully");
 
             return order.Id;
         }

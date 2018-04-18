@@ -37,7 +37,7 @@ namespace BootShop.Web.API.Infrastructure
                                       $"at {context.ExecutionKey}, " +
                                       $"due to: {exception}.";
 
-                            _logger.LogWarning(msg);
+                            _logger.LogDebug(msg);
                         }),
 
                 Policy.Handle<HttpRequestException>()
