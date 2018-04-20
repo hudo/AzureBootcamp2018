@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace BootShop.Service.Payment
@@ -19,6 +13,12 @@ namespace BootShop.Service.Payment
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging((ctx, logger) =>
+                {
+                    logger.ClearProviders();
+                    logger.AddConfiguration(ctx.Configuration.GetSection("Logging"));
+                    logger.AddConsole();
+                })
                 .UseStartup<Startup>()
                 .UseUrls("http://+:5010")
                 .Build();

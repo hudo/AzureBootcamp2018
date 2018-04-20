@@ -47,8 +47,14 @@ namespace BootShop.Web.API.Infrastructure
                     throw new HttpRequestException();
                 }
 
-                var stream = await response.Content.ReadAsStreamAsync();
+                if (typeof(T) == typeof(string))
+                {
+                    object content = await response.Content.ReadAsStringAsync();
+                    return (T)content;
+                }
 
+                var stream = await response.Content.ReadAsStreamAsync();
+                
                 using (var reader = new StreamReader(stream))
                 using (var jsonReader = new JsonTextReader(reader))
                 {

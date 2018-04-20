@@ -25,6 +25,8 @@ namespace BootShop.Web.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
+
             services.AddSwaggerGen(opt =>
             {
                 opt.SwaggerDoc("v1", new Info { Title = "Azure Bootcamp Webshop Demo", Version = "v1"});
@@ -50,8 +52,6 @@ namespace BootShop.Web.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TelemetryConfiguration telemetry)
         {
-            loggerFactory.AddConsole();
-
             telemetry.DisableTelemetry = true;
                 
             if (env.IsDevelopment())

@@ -35,8 +35,6 @@ namespace BootShop.Service.EmailSender
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TelemetryConfiguration telemetry)
         {
-            loggerFactory.AddConsole();
-
             telemetry.DisableTelemetry = true;
 
             if (env.IsDevelopment())
