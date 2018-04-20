@@ -12,8 +12,8 @@ namespace BootShop.Service.Payment.Controllers
         {
             var random = new Random();
 
-            //if (random.Next(10) > 6)
-            //    return StatusCode(500, "Couldn't process the payment");
+            if (random.Next(10) > 6)
+               return StatusCode(500, "Couldn't process the payment");
 
             return Ok(order);
         }

@@ -37,6 +37,9 @@ namespace BootShop.Web.API
 
                     await _db.SaveChangesAsync();
 
+                    // req/resp model for payment service
+                    // http or queues
+
                     await _paymentClient.Process(order);
 
                     tx.Commit();
@@ -60,6 +63,9 @@ namespace BootShop.Web.API
                     throw;
                 }
             }
+
+            // fire and forget to downstream systems
+            // pub/sub model
 
             await _mailerClient.SendEmailNotification(order);
 

@@ -4,6 +4,7 @@ using BootShop.Web.API.Infrastructure;
 using BootShop.Web.API.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage;
 
 namespace BootShop.Web.API.Controllers
 {
@@ -24,12 +25,15 @@ namespace BootShop.Web.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var isPayOk = await CheckPayment();
+            var isPaymentOk = CheckPayment();
+            var isMailerOk = CheckMailerService();
+
+            await Task.WhenAll(isPaymentOk, isMailerOk);
 
             return Ok(new[]
             {
-                new ServiceHealthModel("payment", isPayOk),
-                new ServiceHealthModel("mailer", true),
+                new ServiceHealthModel("payment", isPaymentOk.Result),
+                new ServiceHealthModel("mailer", isMailerOk.Result),
             });
         }
 
@@ -48,6 +52,24 @@ namespace BootShop.Web.API.Controllers
             }
 
             return payment;
+        }
+
+        private async Task<bool> CheckMailerService()
+        {
+            var account = CloudStorageAccount.Parse(_config.GetConnectionString("StorageAccount"));
+            var queueClient = account.CreateCloudQueueClient();
+            var reference = queueClient.GetQueueReference(_config["MailerService:queue"]);
+
+            try
+            {
+                await reference.ExistsAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

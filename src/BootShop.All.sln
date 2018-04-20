@@ -11,7 +11,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootShop.Service.EmailSende
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootShop.Service.Downstream", "BootShop.Service.Downstream\BootShop.Service.Downstream.csproj", "{06654625-66F6-4F26-AC04-D1202EFCB800}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BootShop.Service.Payment", "BootShop.Service.Payment\BootShop.Service.Payment.csproj", "{D05091B3-74AC-4352-90B3-728F1CC2AC20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootShop.Service.Payment", "BootShop.Service.Payment\BootShop.Service.Payment.csproj", "{D05091B3-74AC-4352-90B3-728F1CC2AC20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A2D5E05A-1FC3-4AA3-8AD9-ADF068A9F7AB}"
+	ProjectSection(SolutionItems) = preProject
+		docker-build-all.cmd = docker-build-all.cmd
+		docker-compose.yml = docker-compose.yml
+		Dockerfile-mailer = Dockerfile-mailer
+		Dockerfile-payment = Dockerfile-payment
+		Dockerfile-web = Dockerfile-web
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
